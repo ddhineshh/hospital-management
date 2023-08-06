@@ -1,7 +1,9 @@
 package com.healthconnect.service.controller;
 
 
+import com.healthconnect.service.request.HospitalAccountRequest;
 import com.healthconnect.service.request.LoginUserRequest;
+import com.healthconnect.service.response.HospitalResponse;
 import com.healthconnect.service.response.UserResponse;
 import com.healthconnect.service.services.HospitalService;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +31,12 @@ public class HospitalController {
 
         @PostMapping("/login-user")
         public UserResponse loginRequest(@RequestBody LoginUserRequest loginUserRequest) {
-                return goalService.createGoal(orgId, goalRequest, empId, role);
+                return hospitalService.getUserLoginData(loginUserRequest);
+        }
+
+        @PostMapping("/create-hospital-account")
+        public HospitalResponse createHospitalAccount(@RequestBody HospitalAccountRequest hospitalAccountRequest){
+                return null;
         }
 
 
