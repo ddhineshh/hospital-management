@@ -6,5 +6,5 @@ import com.healthconnect.service.response.UserResponse;
 public interface HospitalService {
 
 
-
+    UserResponse getUserLoginData(LoginUserRequest loginUserRequest);
 }
