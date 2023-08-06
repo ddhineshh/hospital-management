@@ -1,7 +1,12 @@
 package com.healthconnect.service.services.impl;
 
 import com.healthconnect.service.entity.GeneralPublicUser;
+import com.healthconnect.service.entity.HospitalAccount;
 import com.healthconnect.service.exception.InvalidUserLoginAccessException;
+import com.healthconnect.service.repository.BedsOfHospitalRepository;
+import com.healthconnect.service.repository.DoctorDetailsRepository;
+import com.healthconnect.service.repository.HospitalBedsAvailabilityRepository;
+import com.healthconnect.service.repository.HospitalRepository;
 import com.healthconnect.service.repository.UserRepository;
 import com.healthconnect.service.request.HospitalAccountRequest;
 import com.healthconnect.service.request.LoginUserRequest;
@@ -22,6 +27,19 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private BedsOfHospitalRepository bedsOfHospitalRepository;
+
+    @Autowired
+    private DoctorDetailsRepository doctorDetailsRepository;
+
+    @Autowired
+    private HospitalBedsAvailabilityRepository hospitalBedsAvailabilityRepository;
+
+    @Autowired
+    private HospitalRepository hospitalRepository;
+
 
     @Override
     public UserResponse getUserLoginData(LoginUserRequest loginUserRequest) {
@@ -57,10 +75,46 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public HospitalResponse createHospitalResponse(HospitalAccountRequest hospitalAccountRequest) {
 
+        HospitalAccount hospitalAccount = new HospitalAccount();
+        hospitalAccount.setHPassword(hospitalAccountRequest.getPassword());
+        hospitalAccount.setHName(hospitalAccountRequest.getName());
+        hospitalAccount.setHStreet(hospitalAccountRequest.getStreet());
+        hospitalAccount.setHZipCode(hospitalAccountRequest.getZipCode());
+        hospitalAccount.setHCity(hospitalAccountRequest.getCity());
+        hospitalAccount.setHState(hospitalAccountRequest.getState());
+        hospitalAccount.setHContactNumber(hospitalAccountRequest.getContactNumber());
+        hospitalAccount.setHEmail(hospitalAccountRequest.getEmail());
+        hospitalAccount.setHWebsite(hospitalAccountRequest.getWebsite());
+        hospitalAccount.setHLabFacility(hospitalAccountRequest.getLabFacility());
+        hospitalAccount.setHInsuranceAcceptance(hospitalAccountRequest.getInsuranceAcceptance());
+        hospitalAccount.setHScanningFacility(hospitalAccountRequest.getScanningFacility());
 
+        HospitalAccount hospitalEntity = hospitalRepository.saveAndFlush(hospitalAccount);
 
-        return null;
+        HospitalResponse hospitalResponse = constructHospitalResponse(hospitalEntity.getHospitalId());
 
+        return hospitalResponse;
+
+    }
+
+    public HospitalResponse constructHospitalResponse(Long hospitalId){
+        HospitalAccount hospitalAccount = hospitalRepository.findByHospitalId(hospitalId);
+
+        HospitalResponse hospitalResponse = new HospitalResponse();
+        hospitalResponse.setHospitalId(hospitalAccount.getHospitalId());
+        hospitalResponse.setName(hospitalAccount.getHName());
+        hospitalResponse.setStreet(hospitalAccount.getHStreet());
+        hospitalResponse.setZipCode(hospitalAccount.getHZipCode());
+        hospitalResponse.setCity(hospitalAccount.getHCity());
+        hospitalResponse.setState(hospitalAccount.getHState());
+        hospitalResponse.setContactNumber(hospitalAccount.getHContactNumber());
+        hospitalResponse.setEmail(hospitalAccount.getHEmail());
+        hospitalResponse.setWebsite(hospitalAccount.getHWebsite());
+        hospitalResponse.setLabFacility(hospitalAccount.getHLabFacility());
+        hospitalResponse.setInsuranceAcceptance(hospitalAccount.getHInsuranceAcceptance());
+        hospitalResponse.setScanningFacility(hospitalAccount.getHScanningFacility());
+
+        return hospitalResponse;
     }
 
 
