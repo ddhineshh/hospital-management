@@ -31,7 +31,7 @@ public class HospitalAccount {
     private Long hZipCode;
 
     @Column(name = "h_city")
-    private Long hCity;
+    private String hCity;
 
     @Column(name = "h_state")
     private String hState;
