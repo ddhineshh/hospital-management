@@ -13,46 +13,46 @@ import javax.persistence.Table;
 @Entity
 @Data
 public class HospitalAccount {
+
     @Id
     @Column(name = "h_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long hospitalId;
 
     @Column(name = "h_password")
-    private String h_password;
+    private String hPassword;
 
     @Column(name = "h_name")
-    private String h_name;
+    private String hName;
 
     @Column(name = "h_street")
-    private String h_street;
+    private String hStreet;
 
     @Column(name = "h_zip_code")
-    private Long h_zip_code;
+    private Long hZipCode;
 
     @Column(name = "h_city")
-    private Long h_city;
+    private Long hCity;
 
     @Column(name = "h_state")
-    private String h_state;
+    private String hState;
 
     @Column(name = "h_contact_number")
-    private Long h_contact_number;
+    private Long hContactNumber;
 
     @Column(name = "h_email")
-    private String h_email;
+    private String hEmail;
 
     @Column(name = "h_website")
-    private String h_website;
+    private String hWebsite;
 
     @Column(name = "h_lab_facility")
-    private String h_lab_facility;
+    private String hLabFacility;
 
-    @Column(name = "n_insurance_acceptance")
-    private String n_insurance_acceptance;
+    @Column(name = "h_insurance_acceptance")
+    private String hInsuranceAcceptance;
 
     @Column(name = "h_scanning_facility")
-    private String h_scanning_facility;
+    private String hScanningFacility;
 
 
 }

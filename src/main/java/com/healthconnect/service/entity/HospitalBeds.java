@@ -16,35 +16,34 @@ public class HospitalBeds {
 
     @Id
     @Column(name = "serial_num")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long serial_num;
+    private Long serialNum;
 
     @Column(name = "h_id")
     private Long hospitalId;
 
     @Column(name = "h_regular_beds")
-    private Long h_regular_beds;
+    private Long hRegularBeds;
 
     @Column(name = "h_icu_beds")
-    private Long h_icu_beds;
+    private Long hIcuBeds;
 
     @Column(name = "h_pediatric_beds")
-    private Long h_pediatric_beds;
+    private Long hPediatricBeds;
 
     @Column(name = "h_maternity_beds")
-    private Long h_maternity_beds;
+    private Long hMaternityBeds;
 
     @Column(name = "h_birthing_beds")
-    private Long h_birthing_beds;
+    private Long hBirthingBeds;
 
     @Column(name = "h_orthopedic_beds")
-    private Long h_orthopedic_beds;
+    private Long hOrthopedicBeds;
 
     @Column(name = "h_homecare_beds")
-    private Long h_homecare_beds;
+    private Long hHomecareBeds;
 
     @Column(name = "h_emergency_beds")
-    private Long h_emergency_beds;
+    private Long hEmergencyBeds;
 
 }
 
