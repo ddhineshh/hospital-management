@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 @Data
 public class UserResponse {
 
-    private String userId;
+    private Long userId;
     private String emailId;
     private String firstName;
     private String middleName;
