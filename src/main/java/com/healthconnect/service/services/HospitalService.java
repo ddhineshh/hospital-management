@@ -1,8 +1,13 @@
 package com.healthconnect.service.services;
 
+import com.healthconnect.service.entity.DoctorDetails;
+import com.healthconnect.service.entity.HospitalAccount;
+import com.healthconnect.service.entity.HospitalBeds;
+import com.healthconnect.service.entity.HospitalBedsAvailable;
 import com.healthconnect.service.request.BedAvailabilityRequest;
 import com.healthconnect.service.request.DoctorRequest;
 import com.healthconnect.service.request.HospitalAccountRequest;
+import com.healthconnect.service.request.HospitalBedRequest;
 import com.healthconnect.service.request.LoginUserRequest;
 import com.healthconnect.service.request.UserRequest;
 import com.healthconnect.service.response.DoctorResponse;
@@ -24,19 +29,21 @@ public interface HospitalService {
     UserResponse createUserAccount(UserRequest userRequest);
 
 
-    public  void addDoctor(DoctorRequest newDoctor);
+    public DoctorDetails addDoctor(DoctorRequest newDoctor);
 
-    public void updateDoctor(DoctorRequest updateDoctor,Long id);
+    public DoctorDetails updateDoctor(DoctorRequest updateDoctor,Long id);
 
-    public void deleteDoctor(Long id);
+    public String  deleteDoctor(Long id);
 
-     public void updateBedsAvailability(BedAvailabilityRequest updateBedsAvail);
+     public HospitalBedsAvailable updateBedsAvailability(BedAvailabilityRequest updateBedsAvail);
 
-    public void updateHospitalAccount(HospitalAccountRequest updateHospitalAccount);
+    public HospitalAccount updateHospitalAccount(HospitalAccountRequest updateHospitalAccount, Long hospitalId);
 
 
     List<HospitalResponse> getListOfHospital();
 
     List<DoctorResponse> getListOfDoctor(Long hospitalId);
+
+    public HospitalBeds updateBeds(HospitalBedRequest updateBeds);
 
 }
