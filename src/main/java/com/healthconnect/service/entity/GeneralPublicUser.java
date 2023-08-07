@@ -20,8 +20,9 @@ import java.time.LocalDateTime;
 public class GeneralPublicUser {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
-    private String userId;
+    private Long userId;
 
     @Column(name = "password")
     private String password;

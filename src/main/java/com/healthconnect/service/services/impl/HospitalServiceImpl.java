@@ -135,7 +135,6 @@ public class HospitalServiceImpl implements HospitalService {
     public UserResponse createUserAccount(UserRequest userRequest) {
         GeneralPublicUser generalPublicUser = new GeneralPublicUser();
 
-        generalPublicUser.setUserId(userRequest.getUserId());
         generalPublicUser.setPassword(userRequest.getPassword());
         generalPublicUser.setEmailId(userRequest.getEmailId());
         generalPublicUser.setFirstName(userRequest.getFirstName());
