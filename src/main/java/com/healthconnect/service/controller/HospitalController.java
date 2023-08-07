@@ -114,6 +114,27 @@ public class HospitalController {
                 return hospitalService.constructAllHospitalResponse(hospitalId);
         }
 
+        @GetMapping("/get-hospital-details/{hospitalId}")
+        public HospitalResponse getHospitalDetails(@PathVariable Long hospitalId){
+                return hospitalService.constructHospitalResponse(hospitalId);
+        }
+
+        @GetMapping("/get-hospital-bed/{hospitalId}")
+        public BedResponse getHospitalBed(@PathVariable Long hospitalId){
+                return hospitalService.constructBedResponse(hospitalId);
+        }
+
+        @GetMapping("/get-hospital-bed-avail/{hospitalId}")
+        public BedAvailableResponse getHospitalBedAvail(@PathVariable Long hospitalId){
+                return hospitalService.constructBedAvailableResponse(hospitalId);
+        }
+
+        @PutMapping("/update-user")
+        public UserResponse updateUser(@RequestBody UserRequest userRequest){
+                return hospitalService.updateUser(userRequest);
+        }
+
+
 
 
 

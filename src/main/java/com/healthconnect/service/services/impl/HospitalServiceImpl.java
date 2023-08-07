@@ -380,6 +380,30 @@ public class HospitalServiceImpl implements HospitalService {
         return response;
     }
 
+    @Override
+    public UserResponse updateUser(UserRequest userRequest) {
+
+        GeneralPublicUser generalPublicUser = userRepository.findByUserId(userRequest.getUserId());
+
+        generalPublicUser.setFirstName(userRequest.getFirstName());
+        generalPublicUser.setMiddleName(userRequest.getMiddleName());
+        generalPublicUser.setLastName(userRequest.getLastName());
+        generalPublicUser.setPassword(userRequest.getPassword());
+        generalPublicUser.setContactNumber(userRequest.getContactNumber());
+        generalPublicUser.setEmailId(userRequest.getEmailId());
+        generalPublicUser.setCity(userRequest.getCity());
+        generalPublicUser.setStreetName(userRequest.getStreetName());
+        generalPublicUser.setZipCode(userRequest.getZipCode());
+        generalPublicUser.setEmergencyContactName(userRequest.getEmergencyContactName());
+        generalPublicUser.setEmergencyContactNumber(userRequest.getEmergencyContactNumber());
+        generalPublicUser.setState(userRequest.getState());
+
+        GeneralPublicUser generalPublicUserEntity = userRepository.saveAndFlush(generalPublicUser);
+
+        return constructUserResponse(generalPublicUserEntity.getEmailId());
+
+    }
+
     public BedAvailableResponse constructBedAvailableResponse(Long hospitalId) {
         HospitalBedsAvailable hospitalBedsEntity = hospitalBedsAvailabilityRepository.findByHospitalId(hospitalId);
 
