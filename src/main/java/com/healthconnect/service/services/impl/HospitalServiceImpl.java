@@ -1,5 +1,6 @@
 package com.healthconnect.service.services.impl;
 
+import com.healthconnect.service.entity.DoctorDetails;
 import com.healthconnect.service.entity.GeneralPublicUser;
 import com.healthconnect.service.entity.HospitalAccount;
 import com.healthconnect.service.entity.HospitalBeds;
@@ -10,6 +11,7 @@ import com.healthconnect.service.repository.DoctorDetailsRepository;
 import com.healthconnect.service.repository.HospitalBedsAvailabilityRepository;
 import com.healthconnect.service.repository.HospitalRepository;
 import com.healthconnect.service.repository.UserRepository;
+import com.healthconnect.service.request.DoctorRequest;
 import com.healthconnect.service.request.HospitalAccountRequest;
 import com.healthconnect.service.request.LoginUserRequest;
 import com.healthconnect.service.request.UserRequest;
@@ -42,7 +44,6 @@ public class HospitalServiceImpl implements HospitalService {
 
     @Autowired
     private HospitalRepository hospitalRepository;
-
 
     @Override
     public UserResponse getUserLoginData(LoginUserRequest loginUserRequest) {
@@ -148,6 +149,45 @@ public class HospitalServiceImpl implements HospitalService {
 
         return constructUserResponse(generalPublicUserEntity.getEmailId());
 
+    }
+
+    public void  addDoctor(DoctorRequest doctorRequest){
+
+        DoctorDetails doctorDetails = new DoctorDetails();
+        doctorDetails.setHospitalId(doctorRequest.getHospitalId());
+        doctorDetails.setFirstName(doctorRequest.getFirstName());
+        doctorDetails.setLastName(doctorRequest.getLastName());
+        doctorDetails.setGender(doctorRequest.getGender());
+        doctorDetails.setAge(doctorRequest.getAge());
+        doctorDetails.setSpecialization(doctorRequest.getSpecialization());
+        doctorDetails.setContactNumber(doctorRequest.getContactNumber());
+        doctorDetails.setEmailAddress(doctorRequest.getEmailAddress());
+        doctorDetails.setYearsOfExperience(doctorRequest.getYearsOfExperience());
+        doctorDetails.setLanguagesKnown(doctorRequest.getLanguagesKnown());
+        doctorDetails.setConsultationHours(doctorRequest.getConsultationHours());
+        doctorDetails.setAvailabilityDays(doctorRequest.getAvailabilityDays());
+
+        doctorDetailsRepository.saveAndFlush(doctorDetails);
+
+    }
+
+
+    public void updateDoctor(DoctorRequest updateDoctor,Long id){
+        DoctorDetails doctorDetails = DoctorDetailsRepository;
+        doctorDetails.setHospitalId(updateDoctor.getHospitalId());
+        doctorDetails.setFirstName(updateDoctor.getFirstName());
+        doctorDetails.setLastName(updateDoctor.getLastName());
+        doctorDetails.setGender(updateDoctor.getGender());
+        doctorDetails.setAge(updateDoctor.getAge());
+        doctorDetails.setSpecialization(updateDoctor.getSpecialization());
+        doctorDetails.setContactNumber(updateDoctor.getContactNumber());
+        doctorDetails.setEmailAddress(updateDoctor.getEmailAddress());
+        doctorDetails.setYearsOfExperience(updateDoctor.getYearsOfExperience());
+        doctorDetails.setLanguagesKnown(updateDoctor.getLanguagesKnown());
+        doctorDetails.setConsultationHours(updateDoctor.getConsultationHours());
+        doctorDetails.setAvailabilityDays(updateDoctor.getAvailabilityDays());
+
+        doctorDetailsRepository.saveAndFlush(doctorDetails);
     }
 
 

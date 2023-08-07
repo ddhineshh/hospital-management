@@ -1,6 +1,7 @@
 package com.healthconnect.service.controller;
 
 
+import com.healthconnect.service.request.DoctorRequest;
 import com.healthconnect.service.request.HospitalAccountRequest;
 import com.healthconnect.service.request.LoginUserRequest;
 import com.healthconnect.service.request.UserRequest;
@@ -11,7 +12,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,6 +51,18 @@ public class HospitalController {
         @PostMapping("/create-user-account")
         public UserResponse createUserAccount(@RequestBody UserRequest userRequest){
                 return hospitalService.createUserAccount(userRequest);
+        }
+
+        @PostMapping("/doctor")
+        public HospitalResponse doctorAdd(@RequestBody DoctorRequest newDoctor){
+              HospitalService.addDoctor(newDoctor);
+              return null;
+        }
+
+        @PutMapping("/doctor/{id}")
+        public HospitalResponse doctorAdd(@RequestBody DoctorRequest updateDoctor, @PathVariable Long id){
+                HospitalService.updateDoctor(updateDoctor,id);
+                return null;
         }
 
 
