@@ -2,6 +2,8 @@ package com.healthconnect.service.services.impl;
 
 import com.healthconnect.service.entity.GeneralPublicUser;
 import com.healthconnect.service.entity.HospitalAccount;
+import com.healthconnect.service.entity.HospitalBeds;
+import com.healthconnect.service.entity.HospitalBedsAvailable;
 import com.healthconnect.service.exception.InvalidUserLoginAccessException;
 import com.healthconnect.service.repository.BedsOfHospitalRepository;
 import com.healthconnect.service.repository.DoctorDetailsRepository;
@@ -10,6 +12,7 @@ import com.healthconnect.service.repository.HospitalRepository;
 import com.healthconnect.service.repository.UserRepository;
 import com.healthconnect.service.request.HospitalAccountRequest;
 import com.healthconnect.service.request.LoginUserRequest;
+import com.healthconnect.service.request.UserRequest;
 import com.healthconnect.service.response.HospitalResponse;
 import com.healthconnect.service.response.UserResponse;
 import com.healthconnect.service.services.HospitalService;
@@ -73,23 +76,31 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public HospitalResponse createHospitalResponse(HospitalAccountRequest hospitalAccountRequest) {
+    public HospitalResponse createHospitalAccount(HospitalAccountRequest hospitalAccountRequest) {
 
         HospitalAccount hospitalAccount = new HospitalAccount();
-        hospitalAccount.setHPassword(hospitalAccountRequest.getPassword());
-        hospitalAccount.setHName(hospitalAccountRequest.getName());
-        hospitalAccount.setHStreet(hospitalAccountRequest.getStreet());
-        hospitalAccount.setHZipCode(hospitalAccountRequest.getZipCode());
-        hospitalAccount.setHCity(hospitalAccountRequest.getCity());
-        hospitalAccount.setHState(hospitalAccountRequest.getState());
-        hospitalAccount.setHContactNumber(hospitalAccountRequest.getContactNumber());
-        hospitalAccount.setHEmail(hospitalAccountRequest.getEmail());
-        hospitalAccount.setHWebsite(hospitalAccountRequest.getWebsite());
-        hospitalAccount.setHLabFacility(hospitalAccountRequest.getLabFacility());
-        hospitalAccount.setHInsuranceAcceptance(hospitalAccountRequest.getInsuranceAcceptance());
-        hospitalAccount.setHScanningFacility(hospitalAccountRequest.getScanningFacility());
+        hospitalAccount.setPassword(hospitalAccountRequest.getPassword());
+        hospitalAccount.setName(hospitalAccountRequest.getName());
+        hospitalAccount.setStreet(hospitalAccountRequest.getStreet());
+        hospitalAccount.setZipCode(hospitalAccountRequest.getZipCode());
+        hospitalAccount.setCity(hospitalAccountRequest.getCity());
+        hospitalAccount.setState(hospitalAccountRequest.getState());
+        hospitalAccount.setContactNumber(hospitalAccountRequest.getContactNumber());
+        hospitalAccount.setEmail(hospitalAccountRequest.getEmail());
+        hospitalAccount.setWebsite(hospitalAccountRequest.getWebsite());
+        hospitalAccount.setLabFacility(hospitalAccountRequest.getLabFacility());
+        hospitalAccount.setInsuranceAcceptance(hospitalAccountRequest.getInsuranceAcceptance());
+        hospitalAccount.setScanningFacility(hospitalAccountRequest.getScanningFacility());
 
         HospitalAccount hospitalEntity = hospitalRepository.saveAndFlush(hospitalAccount);
+
+        HospitalBeds hospitalBeds = new HospitalBeds();
+        hospitalBeds.setHospitalId(hospitalEntity.getHospitalId());
+        bedsOfHospitalRepository.saveAndFlush(hospitalBeds);
+
+        HospitalBedsAvailable hospitalBedsAvailable = new HospitalBedsAvailable();
+        hospitalBedsAvailable.setHospitalId(hospitalEntity.getHospitalId());
+        hospitalBedsAvailabilityRepository.saveAndFlush(hospitalBedsAvailable);
 
         HospitalResponse hospitalResponse = constructHospitalResponse(hospitalEntity.getHospitalId());
 
@@ -97,25 +108,93 @@ public class HospitalServiceImpl implements HospitalService {
 
     }
 
+    @Override
+    public HospitalResponse getHospitalLoginData(HospitalAccountRequest hospitalAccountRequest) {
+
+        Optional<HospitalAccount> hospitalAccount = hospitalRepository.findByEmailAndPassword(hospitalAccountRequest.getEmail(), hospitalAccountRequest.getPassword());
+
+        if(hospitalAccount.isEmpty()){
+            throw new InvalidUserLoginAccessException("no hospital is present with this email an password");
+        }
+
+        if(hospitalAccount.isPresent()){
+            HospitalAccount hospitalAccountEntity = hospitalAccount.get();
+            return constructHospitalResponse(hospitalAccountEntity.getHospitalId());
+
+        }
+        return null;
+    }
+
+    @Override
+    public UserResponse createUserAccount(UserRequest userRequest) {
+        GeneralPublicUser generalPublicUser = new GeneralPublicUser();
+
+        generalPublicUser.setUserId(userRequest.getUserId());
+        generalPublicUser.setPassword(userRequest.getPassword());
+        generalPublicUser.setEmailId(userRequest.getEmailId());
+        generalPublicUser.setFirstName(userRequest.getFirstName());
+        generalPublicUser.setMiddleName(userRequest.getMiddleName());
+        generalPublicUser.setLastName(userRequest.getLastName());
+        generalPublicUser.setContactNumber(userRequest.getContactNumber());
+        generalPublicUser.setStreetName(userRequest.getStreetName());
+        generalPublicUser.setCity(userRequest.getCity());
+        generalPublicUser.setZipCode(userRequest.getZipCode());
+        generalPublicUser.setState(userRequest.getState());
+        generalPublicUser.setEmergencyContactName(userRequest.getEmergencyContactName());
+        generalPublicUser.setEmergencyContactNumber(userRequest.getEmergencyContactNumber());
+        generalPublicUser.setUserCreatedData(userRequest.getUserCreatedData());
+
+        GeneralPublicUser generalPublicUserEntity = userRepository.saveAndFlush(generalPublicUser);
+
+        return constructUserResponse(generalPublicUserEntity.getEmailId());
+
+    }
+
+
     public HospitalResponse constructHospitalResponse(Long hospitalId){
         HospitalAccount hospitalAccount = hospitalRepository.findByHospitalId(hospitalId);
 
         HospitalResponse hospitalResponse = new HospitalResponse();
         hospitalResponse.setHospitalId(hospitalAccount.getHospitalId());
-        hospitalResponse.setName(hospitalAccount.getHName());
-        hospitalResponse.setStreet(hospitalAccount.getHStreet());
-        hospitalResponse.setZipCode(hospitalAccount.getHZipCode());
-        hospitalResponse.setCity(hospitalAccount.getHCity());
-        hospitalResponse.setState(hospitalAccount.getHState());
-        hospitalResponse.setContactNumber(hospitalAccount.getHContactNumber());
-        hospitalResponse.setEmail(hospitalAccount.getHEmail());
-        hospitalResponse.setWebsite(hospitalAccount.getHWebsite());
-        hospitalResponse.setLabFacility(hospitalAccount.getHLabFacility());
-        hospitalResponse.setInsuranceAcceptance(hospitalAccount.getHInsuranceAcceptance());
-        hospitalResponse.setScanningFacility(hospitalAccount.getHScanningFacility());
+        hospitalResponse.setName(hospitalAccount.getName());
+        hospitalResponse.setStreet(hospitalAccount.getStreet());
+        hospitalResponse.setZipCode(hospitalAccount.getZipCode());
+        hospitalResponse.setCity(hospitalAccount.getCity());
+        hospitalResponse.setState(hospitalAccount.getState());
+        hospitalResponse.setContactNumber(hospitalAccount.getContactNumber());
+        hospitalResponse.setEmail(hospitalAccount.getEmail());
+        hospitalResponse.setWebsite(hospitalAccount.getWebsite());
+        hospitalResponse.setLabFacility(hospitalAccount.getLabFacility());
+        hospitalResponse.setInsuranceAcceptance(hospitalAccount.getInsuranceAcceptance());
+        hospitalResponse.setScanningFacility(hospitalAccount.getScanningFacility());
 
         return hospitalResponse;
     }
+
+    public UserResponse constructUserResponse(String emailId){
+        GeneralPublicUser generalPublicUserEntity = userRepository.findByEmailId(emailId);
+        UserResponse userResponse = new UserResponse();
+        userResponse.setUserId(generalPublicUserEntity.getUserId());
+        userResponse.setEmailId(generalPublicUserEntity.getEmailId());
+        userResponse.setFirstName(generalPublicUserEntity.getFirstName());
+        userResponse.setMiddleName(generalPublicUserEntity.getMiddleName());
+        userResponse.setLastName(generalPublicUserEntity.getLastName());
+        userResponse.setContactNumber(generalPublicUserEntity.getContactNumber());
+        userResponse.setStreetName(generalPublicUserEntity.getStreetName());
+        userResponse.setCity(generalPublicUserEntity.getCity());
+        userResponse.setZipCode(generalPublicUserEntity.getZipCode());
+        userResponse.setState(generalPublicUserEntity.getState());
+        userResponse.setEmergencyContactName(generalPublicUserEntity.getEmergencyContactName());
+        userResponse.setEmergencyContactNumber(generalPublicUserEntity.getEmergencyContactNumber());
+        userResponse.setUserCreatedData(generalPublicUserEntity.getUserCreatedData());
+
+        return userResponse;
+
+    }
+
+
+
+
 
 
 }

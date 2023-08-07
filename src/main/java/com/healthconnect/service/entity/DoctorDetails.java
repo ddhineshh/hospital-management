@@ -41,7 +41,7 @@ public class DoctorDetails {
     private String specialization;
 
     @Column(name = "contact_number")
-    private Long contactNumber;
+    private String contactNumber;
 
     @Column(name = "email_address")
     private String emailAddress;
@@ -61,19 +61,3 @@ public class DoctorDetails {
 
 }
 
-//    CREATE TABLE doctor_details (
-//        doctor_id INT NOT NULL AUTO_INCREMENT,
-//        h_id INT DEFAULT NULL,
-//        first_name VARCHAR(100) DEFAULT NULL,
-//    last_name VARCHAR(100) DEFAULT NULL,
-//    gender VARCHAR(10) DEFAULT NULL,
-//    age INT DEFAULT NULL,
-//    specialization VARCHAR(100) DEFAULT NULL,
-//    contact_number INT DEFAULT NULL,
-//    email_address VARCHAR(100) DEFAULT NULL,
-//    years_of_experience INT DEFAULT NULL,
-//    languages_known VARCHAR(200) DEFAULT NULL,
-//    consultation_hours VARCHAR(100) DEFAULT NULL,
-//    availability_days VARCHAR(100) DEFAULT NULL,
-//    PRIMARY KEY (`doctor_id`)
-//);

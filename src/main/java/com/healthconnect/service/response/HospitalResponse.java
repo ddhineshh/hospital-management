@@ -12,7 +12,7 @@ public class HospitalResponse {
     private Long zipCode;
     private String city;
     private String state;
-    private Long contactNumber;
+    private String contactNumber;
     private String email;
     private String website;
     private String labFacility;
