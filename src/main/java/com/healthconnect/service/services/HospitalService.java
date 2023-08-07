@@ -29,15 +29,15 @@ public interface HospitalService {
     UserResponse createUserAccount(UserRequest userRequest);
 
 
-    public DoctorDetails addDoctor(DoctorRequest newDoctor);
+    public DoctorResponse addDoctor(DoctorRequest newDoctor);
 
-    public DoctorDetails updateDoctor(DoctorRequest updateDoctor,Long id);
+    public DoctorResponse updateDoctor(DoctorRequest updateDoctor,Long id);
 
     public String  deleteDoctor(Long id);
 
      public HospitalBedsAvailable updateBedsAvailability(BedAvailabilityRequest updateBedsAvail);
 
-    public HospitalAccount updateHospitalAccount(HospitalAccountRequest updateHospitalAccount, Long hospitalId);
+    public HospitalResponse updateHospitalAccount(HospitalAccountRequest updateHospitalAccount, Long hospitalId);
 
 
     List<HospitalResponse> getListOfHospital();

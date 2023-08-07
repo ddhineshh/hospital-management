@@ -64,12 +64,12 @@ public class HospitalController {
         }
 
         @PostMapping("/doctor")
-        public DoctorDetails doctorAdd(@RequestBody DoctorRequest newDoctor){
+        public DoctorResponse doctorAdd(@RequestBody DoctorRequest newDoctor){
             return  hospitalService.addDoctor(newDoctor);
         }
 
         @PutMapping("/doctor/{id}")
-        public DoctorDetails updateDoctor(@RequestBody DoctorRequest updateDoctor, @PathVariable Long id) {
+        public DoctorResponse updateDoctor(@RequestBody DoctorRequest updateDoctor, @PathVariable Long id) {
               return  hospitalService.updateDoctor(updateDoctor, id);
         }
 
@@ -92,7 +92,7 @@ public class HospitalController {
 
 
         @PutMapping("/hospital/{id}")
-        public HospitalAccount updateHospital(@RequestBody HospitalAccountRequest updateHospitalAccount, @PathVariable Long id) {
+        public HospitalResponse updateHospital(@RequestBody HospitalAccountRequest updateHospitalAccount, @PathVariable Long id) {
              return   hospitalService.updateHospitalAccount(updateHospitalAccount,id);
         }
 
