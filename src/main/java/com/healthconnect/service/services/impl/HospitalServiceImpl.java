@@ -16,6 +16,7 @@ import com.healthconnect.service.request.DoctorRequest;
 import com.healthconnect.service.request.HospitalAccountRequest;
 import com.healthconnect.service.request.LoginUserRequest;
 import com.healthconnect.service.request.UserRequest;
+import com.healthconnect.service.response.DoctorResponse;
 import com.healthconnect.service.response.HospitalResponse;
 import com.healthconnect.service.response.UserResponse;
 import com.healthconnect.service.services.HospitalService;
@@ -23,6 +24,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -194,6 +197,36 @@ public class HospitalServiceImpl implements HospitalService {
         doctorDetailsRepository.deleteById(id);
     }
 
+    @Override
+    public List<HospitalResponse> getListOfHospital() {
+
+        List<HospitalAccount> hospitalAccounts = hospitalRepository.findAll();
+
+        List<HospitalResponse> hospitalResponses = new ArrayList<>();
+
+        for (HospitalAccount hospitalAccount : hospitalAccounts) {
+            hospitalResponses.add(constructHospitalResponse(hospitalAccount.getHospitalId()));
+        }
+
+        return hospitalResponses;
+
+    }
+
+    @Override
+    public List<DoctorResponse> getListOfDoctor(Long hospitalId) {
+        List<DoctorDetails> doctorDetailsList = doctorDetailsRepository.findAllByHospitalId(hospitalId);
+
+        List<DoctorResponse> doctorResponseList = new ArrayList<>();
+
+        for( DoctorDetails doctorDetails : doctorDetailsList){
+            doctorResponseList.add(constructDoctorResponse(doctorDetails.getDoctorId()));
+        }
+
+        return doctorResponseList;
+    }
+
+
+
     public HospitalResponse constructHospitalResponse(Long hospitalId){
         HospitalAccount hospitalAccount = hospitalRepository.findByHospitalId(hospitalId);
 
@@ -233,6 +266,29 @@ public class HospitalServiceImpl implements HospitalService {
 
         return userResponse;
 
+    }
+
+    public DoctorResponse constructDoctorResponse(Long doctorId){
+
+        DoctorDetails doctorEntity = doctorDetailsRepository.getById(doctorId);
+
+        DoctorResponse doctorResponse = new DoctorResponse();
+
+        doctorResponse.setDoctorId(doctorEntity.getDoctorId());
+        doctorResponse.setHospitalId(doctorEntity.getHospitalId());
+        doctorResponse.setFirstName(doctorEntity.getFirstName());
+        doctorResponse.setLastName(doctorEntity.getLastName());
+        doctorResponse.setGender(doctorEntity.getGender());
+        doctorResponse.setAge(doctorEntity.getAge());
+        doctorResponse.setSpecialization(doctorEntity.getSpecialization());
+        doctorResponse.setContactNumber(doctorEntity.getContactNumber());
+        doctorResponse.setEmailAddress(doctorEntity.getEmailAddress());
+        doctorResponse.setYearsOfExperience(doctorEntity.getYearsOfExperience());
+        doctorResponse.setLanguagesKnown(doctorEntity.getLanguagesKnown());
+        doctorResponse.setConsultationHours(doctorEntity.getConsultationHours());
+        doctorResponse.setAvailabilityDays(doctorEntity.getAvailabilityDays());
+
+        return doctorResponse;
     }
 
 
