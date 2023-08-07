@@ -155,7 +155,7 @@ public class HospitalServiceImpl implements HospitalService {
 
     }
 
-    public DoctorDetails  addDoctor(DoctorRequest doctorRequest){
+    public DoctorResponse  addDoctor(DoctorRequest doctorRequest){
         DoctorDetails doctorDetails = new DoctorDetails();
         doctorDetails.setHospitalId(doctorRequest.getHospitalId());
         doctorDetails.setFirstName(doctorRequest.getFirstName());
@@ -170,14 +170,14 @@ public class HospitalServiceImpl implements HospitalService {
         doctorDetails.setConsultationHours(doctorRequest.getConsultationHours());
         doctorDetails.setAvailabilityDays(doctorRequest.getAvailabilityDays());
 
-        doctorDetailsRepository.saveAndFlush(doctorDetails);
+        DoctorDetails docEntity = doctorDetailsRepository.saveAndFlush(doctorDetails);
 
-        return doctorDetails;
+        return constructDoctorResponse(docEntity.getDoctorId());
 
     }
 
 
-    public DoctorDetails updateDoctor(DoctorRequest updateDoctor,Long id){
+    public DoctorResponse updateDoctor(DoctorRequest updateDoctor,Long id){
         DoctorDetails doctorDetails = doctorDetailsRepository.findByDoctorId(id);
         doctorDetails.setHospitalId(updateDoctor.getHospitalId());
         doctorDetails.setFirstName(updateDoctor.getFirstName());
@@ -192,9 +192,9 @@ public class HospitalServiceImpl implements HospitalService {
         doctorDetails.setConsultationHours(updateDoctor.getConsultationHours());
         doctorDetails.setAvailabilityDays(updateDoctor.getAvailabilityDays());
 
-        doctorDetailsRepository.saveAndFlush(doctorDetails);
+        DoctorDetails docEntity = doctorDetailsRepository.saveAndFlush(doctorDetails);
 
-        return doctorDetails;
+        return constructDoctorResponse(docEntity.getDoctorId());
     }
 
     public String deleteDoctor(Long id){
@@ -312,12 +312,13 @@ public class HospitalServiceImpl implements HospitalService {
             hospitalBedsAvailable.setOrthopedicBedsAvail(bedAvailabilityRequest.getOrthopedicBedAvail());
             hospitalBedsAvailable.setHomecareBedsAvail(bedAvailabilityRequest.getHomeCareBedAvail());
             hospitalBedsAvailable.setEmergencyBedsAvail(bedAvailabilityRequest.getEmergencyBedAvail());
+
             hospitalBedsAvailabilityRepository.saveAndFlush(hospitalBedsAvailable);
 
             return hospitalBedsAvailable;
         }
 
-    public HospitalAccount updateHospitalAccount(HospitalAccountRequest updateHospitalAccount,Long hospitalId){
+    public HospitalResponse updateHospitalAccount(HospitalAccountRequest updateHospitalAccount,Long hospitalId){
         Optional<HospitalAccount> optionalHospitalBedsAvailable = hospitalRepository.findById(hospitalId);
 
         HospitalAccount hospitalAccount = optionalHospitalBedsAvailable.get();
@@ -335,9 +336,9 @@ public class HospitalServiceImpl implements HospitalService {
         hospitalAccount.setInsuranceAcceptance(updateHospitalAccount.getInsuranceAcceptance());
         hospitalAccount.setScanningFacility(updateHospitalAccount.getScanningFacility());
 
-        hospitalRepository.saveAndFlush(hospitalAccount);
+        HospitalAccount hosEntity = hospitalRepository.saveAndFlush(hospitalAccount);
 
-        return hospitalAccount;
+        return constructHospitalResponse(hospitalAccount.getHospitalId());
     }
     public HospitalBeds updateBeds(HospitalBedRequest updateBeds){
         Optional<HospitalBeds> optionalHospitalBeds= bedsOfHospitalRepository.findById(updateBeds.getHospitalId());
