@@ -10,6 +10,9 @@ import com.healthconnect.service.request.HospitalAccountRequest;
 import com.healthconnect.service.request.HospitalBedRequest;
 import com.healthconnect.service.request.LoginUserRequest;
 import com.healthconnect.service.request.UserRequest;
+import com.healthconnect.service.response.AllHospitalResponse;
+import com.healthconnect.service.response.BedAvailableResponse;
+import com.healthconnect.service.response.BedResponse;
 import com.healthconnect.service.response.DoctorResponse;
 import com.healthconnect.service.response.HospitalResponse;
 import com.healthconnect.service.response.UserResponse;
@@ -35,7 +38,7 @@ public interface HospitalService {
 
     public String  deleteDoctor(Long id);
 
-     public HospitalBedsAvailable updateBedsAvailability(BedAvailabilityRequest updateBedsAvail);
+     public BedAvailableResponse updateBedsAvailability(BedAvailabilityRequest updateBedsAvail);
 
     public HospitalResponse updateHospitalAccount(HospitalAccountRequest updateHospitalAccount, Long hospitalId);
 
@@ -44,6 +47,8 @@ public interface HospitalService {
 
     List<DoctorResponse> getListOfDoctor(Long hospitalId);
 
-    public HospitalBeds updateBeds(HospitalBedRequest updateBeds);
+    public BedResponse updateBeds(HospitalBedRequest updateBeds);
+
+    public AllHospitalResponse constructAllHospitalResponse(Long hospitalId);
 
 }

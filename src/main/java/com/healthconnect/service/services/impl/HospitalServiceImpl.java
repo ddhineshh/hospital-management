@@ -17,6 +17,9 @@ import com.healthconnect.service.request.HospitalAccountRequest;
 import com.healthconnect.service.request.HospitalBedRequest;
 import com.healthconnect.service.request.LoginUserRequest;
 import com.healthconnect.service.request.UserRequest;
+import com.healthconnect.service.response.AllHospitalResponse;
+import com.healthconnect.service.response.BedAvailableResponse;
+import com.healthconnect.service.response.BedResponse;
 import com.healthconnect.service.response.DoctorResponse;
 import com.healthconnect.service.response.HospitalResponse;
 import com.healthconnect.service.response.UserResponse;
@@ -25,6 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -147,7 +151,7 @@ public class HospitalServiceImpl implements HospitalService {
         generalPublicUser.setState(userRequest.getState());
         generalPublicUser.setEmergencyContactName(userRequest.getEmergencyContactName());
         generalPublicUser.setEmergencyContactNumber(userRequest.getEmergencyContactNumber());
-        generalPublicUser.setUserCreatedData(userRequest.getUserCreatedData());
+        generalPublicUser.setUserCreatedData(LocalDateTime.now());
 
         GeneralPublicUser generalPublicUserEntity = userRepository.saveAndFlush(generalPublicUser);
 
@@ -298,7 +302,7 @@ public class HospitalServiceImpl implements HospitalService {
 
 
 
-    public HospitalBedsAvailable updateBedsAvailability(BedAvailabilityRequest bedAvailabilityRequest){
+    public BedAvailableResponse updateBedsAvailability(BedAvailabilityRequest bedAvailabilityRequest){
 
         Optional<HospitalBedsAvailable> optionalHospitalBedsAvailable = hospitalBedsAvailabilityRepository.findById(bedAvailabilityRequest.getHospitalId());
 
@@ -313,9 +317,9 @@ public class HospitalServiceImpl implements HospitalService {
             hospitalBedsAvailable.setHomecareBedsAvail(bedAvailabilityRequest.getHomeCareBedAvail());
             hospitalBedsAvailable.setEmergencyBedsAvail(bedAvailabilityRequest.getEmergencyBedAvail());
 
-            hospitalBedsAvailabilityRepository.saveAndFlush(hospitalBedsAvailable);
+            HospitalBedsAvailable hospitalBedsAvailableEntity = hospitalBedsAvailabilityRepository.saveAndFlush(hospitalBedsAvailable);
 
-            return hospitalBedsAvailable;
+            return constructBedAvailableResponse(hospitalBedsAvailableEntity.getHospitalId());
         }
 
     public HospitalResponse updateHospitalAccount(HospitalAccountRequest updateHospitalAccount,Long hospitalId){
@@ -338,9 +342,9 @@ public class HospitalServiceImpl implements HospitalService {
 
         HospitalAccount hosEntity = hospitalRepository.saveAndFlush(hospitalAccount);
 
-        return constructHospitalResponse(hospitalAccount.getHospitalId());
+        return constructHospitalResponse(hosEntity.getHospitalId());
     }
-    public HospitalBeds updateBeds(HospitalBedRequest updateBeds){
+    public BedResponse updateBeds(HospitalBedRequest updateBeds){
         Optional<HospitalBeds> optionalHospitalBeds= bedsOfHospitalRepository.findById(updateBeds.getHospitalId());
 
         HospitalBeds hospitalBeds = optionalHospitalBeds.get();
@@ -354,7 +358,55 @@ public class HospitalServiceImpl implements HospitalService {
         hospitalBeds.setHomecareBeds(updateBeds.getHomeCareBeds());
         hospitalBeds.setEmergencyBeds(updateBeds.getEmergencyBeds());
 
-        bedsOfHospitalRepository.saveAndFlush(hospitalBeds);
-        return hospitalBeds;
+        HospitalBeds hospitalBedsEntity = bedsOfHospitalRepository.saveAndFlush(hospitalBeds);
+        return constructBedResponse(hospitalBedsEntity.getHospitalId());
+    }
+
+    public BedResponse constructBedResponse(Long hospitalId) {
+        HospitalBeds hospitalBedsEntity = bedsOfHospitalRepository.findByHospitalId(hospitalId);
+
+        BedResponse response = new BedResponse();
+        response.setSerialNum(hospitalBedsEntity.getSerialNum());
+        response.setHospitalId(hospitalBedsEntity.getHospitalId());
+        response.setRegularBeds(hospitalBedsEntity.getRegularBeds());
+        response.setIcuBeds(hospitalBedsEntity.getIcuBeds());
+        response.setPediatricBeds(hospitalBedsEntity.getPediatricBeds());
+        response.setMaternityBeds(hospitalBedsEntity.getMaternityBeds());
+        response.setBirthingBeds(hospitalBedsEntity.getBirthingBeds());
+        response.setOrthopedicBeds(hospitalBedsEntity.getOrthopedicBeds());
+        response.setHomecareBeds(hospitalBedsEntity.getHomecareBeds());
+        response.setEmergencyBeds(hospitalBedsEntity.getEmergencyBeds());
+
+        return response;
+    }
+
+    public BedAvailableResponse constructBedAvailableResponse(Long hospitalId) {
+        HospitalBedsAvailable hospitalBedsEntity = hospitalBedsAvailabilityRepository.findByHospitalId(hospitalId);
+
+        BedAvailableResponse response = new BedAvailableResponse();
+        response.setSerialNum(hospitalBedsEntity.getSerialNum());
+        response.setHospitalId(hospitalBedsEntity.getHospitalId());
+        response.setRegularBedsAvail(hospitalBedsEntity.getRegularBedsAvail());
+        response.setIcuBedsAvail(hospitalBedsEntity.getIcuBedsAvail());
+        response.setPediatricBedsAvail(hospitalBedsEntity.getPediatricBedsAvail());
+        response.setMaternityBedsAvail(hospitalBedsEntity.getMaternityBedsAvail());
+        response.setBirthingBedsAvail(hospitalBedsEntity.getBirthingBedsAvail());
+        response.setOrthopedicBedsAvail(hospitalBedsEntity.getOrthopedicBedsAvail());
+        response.setHomecareBedsAvail(hospitalBedsEntity.getHomecareBedsAvail());
+        response.setEmergencyBedsAvail(hospitalBedsEntity.getEmergencyBedsAvail());
+
+        return response;
+    }
+
+    public AllHospitalResponse constructAllHospitalResponse(Long hospitalId){
+
+        AllHospitalResponse allHospitalResponse = new AllHospitalResponse();
+
+        allHospitalResponse.setHospitalResponse(constructHospitalResponse(hospitalId));
+        allHospitalResponse.setBedResponse(constructBedResponse(hospitalId));
+        allHospitalResponse.setBedAvailableResponse(constructBedAvailableResponse(hospitalId));
+        allHospitalResponse.setDoctorResponseList(getListOfDoctor(hospitalId));
+
+        return allHospitalResponse;
     }
 }
