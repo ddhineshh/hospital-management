@@ -1,7 +1,14 @@
 package com.healthconnect.service.controller;
 
 
+import com.healthconnect.service.entity.DoctorDetails;
+import com.healthconnect.service.entity.HospitalAccount;
+import com.healthconnect.service.entity.HospitalBeds;
+import com.healthconnect.service.entity.HospitalBedsAvailable;
+import com.healthconnect.service.request.BedAvailabilityRequest;
+import com.healthconnect.service.request.DoctorRequest;
 import com.healthconnect.service.request.HospitalAccountRequest;
+import com.healthconnect.service.request.HospitalBedRequest;
 import com.healthconnect.service.request.LoginUserRequest;
 import com.healthconnect.service.request.UserRequest;
 import com.healthconnect.service.response.DoctorResponse;
@@ -12,9 +19,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -52,6 +61,39 @@ public class HospitalController {
         @PostMapping("/create-user-account")
         public UserResponse createUserAccount(@RequestBody UserRequest userRequest){
                 return hospitalService.createUserAccount(userRequest);
+        }
+
+        @PostMapping("/doctor")
+        public DoctorDetails doctorAdd(@RequestBody DoctorRequest newDoctor){
+            return  hospitalService.addDoctor(newDoctor);
+        }
+
+        @PutMapping("/doctor/{id}")
+        public DoctorDetails updateDoctor(@RequestBody DoctorRequest updateDoctor, @PathVariable Long id) {
+              return  hospitalService.updateDoctor(updateDoctor, id);
+        }
+
+        @DeleteMapping("/doctor/{id}")
+        public String removeDoctor( @PathVariable Long id){
+                return hospitalService.deleteDoctor(id);
+        }
+
+        @PutMapping("/available-beds")
+        public HospitalBedsAvailable updateBeds(@RequestBody BedAvailabilityRequest updateBedsAvail){
+                log.info(updateBedsAvail.toString());
+               return hospitalService.updateBedsAvailability(updateBedsAvail);
+        }
+
+        @PutMapping("/beds")
+        public HospitalBeds updateBeds(@RequestBody HospitalBedRequest updateBeds){
+                log.info(updateBeds.toString());
+                return hospitalService.updateBeds(updateBeds);
+        }
+
+
+        @PutMapping("/hospital/{id}")
+        public HospitalAccount updateHospital(@RequestBody HospitalAccountRequest updateHospitalAccount, @PathVariable Long id) {
+             return   hospitalService.updateHospitalAccount(updateHospitalAccount,id);
         }
 
         @GetMapping("/get-hospital-list")
