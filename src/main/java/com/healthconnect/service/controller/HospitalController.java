@@ -11,6 +11,9 @@ import com.healthconnect.service.request.HospitalAccountRequest;
 import com.healthconnect.service.request.HospitalBedRequest;
 import com.healthconnect.service.request.LoginUserRequest;
 import com.healthconnect.service.request.UserRequest;
+import com.healthconnect.service.response.AllHospitalResponse;
+import com.healthconnect.service.response.BedAvailableResponse;
+import com.healthconnect.service.response.BedResponse;
 import com.healthconnect.service.response.DoctorResponse;
 import com.healthconnect.service.response.HospitalResponse;
 import com.healthconnect.service.response.UserResponse;
@@ -79,13 +82,13 @@ public class HospitalController {
         }
 
         @PutMapping("/available-beds")
-        public HospitalBedsAvailable updateBeds(@RequestBody BedAvailabilityRequest updateBedsAvail){
+        public BedAvailableResponse updateBeds(@RequestBody BedAvailabilityRequest updateBedsAvail){
                 log.info(updateBedsAvail.toString());
                return hospitalService.updateBedsAvailability(updateBedsAvail);
         }
 
         @PutMapping("/beds")
-        public HospitalBeds updateBeds(@RequestBody HospitalBedRequest updateBeds){
+        public BedResponse updateBeds(@RequestBody HospitalBedRequest updateBeds){
                 log.info(updateBeds.toString());
                 return hospitalService.updateBeds(updateBeds);
         }
@@ -105,6 +108,12 @@ public class HospitalController {
         public List<DoctorResponse> getListOfDoctor(@Valid @PathVariable Long hospitalId){
                 return hospitalService.getListOfDoctor(hospitalId);
         }
+
+        @GetMapping("/get-hospital/{hospitalId}")
+        public AllHospitalResponse getAllHospitalDetails(@PathVariable Long hospitalId){
+                return hospitalService.constructAllHospitalResponse(hospitalId);
+        }
+
 
 
 
