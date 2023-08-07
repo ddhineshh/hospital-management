@@ -1,5 +1,6 @@
 package com.healthconnect.service.services;
 
+import com.healthconnect.service.request.BedAvailabilityRequest;
 import com.healthconnect.service.request.DoctorRequest;
 import com.healthconnect.service.request.HospitalAccountRequest;
 import com.healthconnect.service.request.LoginUserRequest;
@@ -22,5 +23,11 @@ public interface HospitalService {
     public  void addDoctor(DoctorRequest newDoctor);
 
     public void updateDoctor(DoctorRequest updateDoctor,Long id);
+
+    public void deleteDoctor(Long id);
+
+     public void updateBedsAvailability(BedAvailabilityRequest updateBedsAvail);
+
+    public void updateHospitalAccount(HospitalAccountRequest updateHospitalAccount);
 
 }

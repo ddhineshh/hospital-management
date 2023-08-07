@@ -1,6 +1,7 @@
 package com.healthconnect.service.controller;
 
 
+import com.healthconnect.service.request.BedAvailabilityRequest;
 import com.healthconnect.service.request.DoctorRequest;
 import com.healthconnect.service.request.HospitalAccountRequest;
 import com.healthconnect.service.request.LoginUserRequest;
@@ -60,9 +61,29 @@ public class HospitalController {
         }
 
         @PutMapping("/doctor/{id}")
-        public void updateDoctor(@RequestBody DoctorRequest updateDoctor, @PathVariable Long id){
-                hospitalService.updateDoctor(updateDoctor,id);
+
+        public void updateDoctor(@RequestBody DoctorRequest updateDoctor, @PathVariable Long id) {
+                hospitalService.updateDoctor(updateDoctor, id);
         }
+
+        @DeleteMapping("/doctor/{id}")
+        public void removeDoctor( @PathVariable Long id){
+                hospitalService.deleteDoctor(id);
+        }
+
+        @PutMapping("/beds")
+        public void updateBeds(@RequestBody BedAvailabilityRequest updateBedsAvail){
+                hospitalService.updateBedsAvailability(updateBedsAvail);
+
+        }
+
+
+        @PutMapping("/hospital")
+        public void updateHospital(@RequestBody HospitalAccountRequest updateHospitalAccount){
+                hospitalService.updateHospitalAccount(updateHospitalAccount);
+        }
+
+
 
 
 }

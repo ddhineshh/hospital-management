@@ -11,6 +11,7 @@ import com.healthconnect.service.repository.DoctorDetailsRepository;
 import com.healthconnect.service.repository.HospitalBedsAvailabilityRepository;
 import com.healthconnect.service.repository.HospitalRepository;
 import com.healthconnect.service.repository.UserRepository;
+import com.healthconnect.service.request.BedAvailabilityRequest;
 import com.healthconnect.service.request.DoctorRequest;
 import com.healthconnect.service.request.HospitalAccountRequest;
 import com.healthconnect.service.request.LoginUserRequest;
@@ -189,6 +190,9 @@ public class HospitalServiceImpl implements HospitalService {
         doctorDetailsRepository.saveAndFlush(doctorDetails);
     }
 
+    public void deleteDoctor(Long id){
+        doctorDetailsRepository.deleteById(id);
+    }
 
     public HospitalResponse constructHospitalResponse(Long hospitalId){
         HospitalAccount hospitalAccount = hospitalRepository.findByHospitalId(hospitalId);
@@ -233,7 +237,41 @@ public class HospitalServiceImpl implements HospitalService {
 
 
 
+    public void updateBedsAvailability(BedAvailabilityRequest bedAvailabilityRequest){
 
+        Optional<HospitalBedsAvailable> optionalHospitalBedsAvailable = hospitalBedsAvailabilityRepository.findById(bedAvailabilityRequest.getHospitalId());
 
+            HospitalBedsAvailable hospitalBedsAvailable = optionalHospitalBedsAvailable.get();
+            hospitalBedsAvailable.setHospitalId(bedAvailabilityRequest.getHospitalId());
+            hospitalBedsAvailable.setRegularBedsAvail(bedAvailabilityRequest.getRegularBedAvail());
+            hospitalBedsAvailable.setIcuBedsAvail(bedAvailabilityRequest.getIcuBedAvail());
+            hospitalBedsAvailable.setPediatricBedsAvail(bedAvailabilityRequest.getPediatricBedAvail());
+            hospitalBedsAvailable.setMaternityBedsAvail(bedAvailabilityRequest.getMaternityBedAvail());
+            hospitalBedsAvailable.setBirthingBedsAvail(bedAvailabilityRequest.getBirthingBedAvail());
+            hospitalBedsAvailable.setOrthopedicBedsAvail(bedAvailabilityRequest.getOrthopedicBedAvail());
+            hospitalBedsAvailable.setHomecareBedsAvail(bedAvailabilityRequest.getHomeCareBedAvail());
+            hospitalBedsAvailable.setEmergencyBedsAvail(bedAvailabilityRequest.getEmergencyBedAvail());
+            hospitalBedsAvailabilityRepository.saveAndFlush(hospitalBedsAvailable);
+        }
+
+    public void updateHospitalAccount(HospitalAccountRequest updateHospitalAccount){
+//        Optional<HospitalBedsAvailable> optionalHospitalBedsAvailable = hospitalRepository.findById(bedAvailabilityRequest.getHospitalId());
+//
+//        HospitalAccount hospitalAccount = new HospitalAccount();
+//
+//        hospitalAccount.setHPassword(updateHospitalAccount.getPassword());
+//        hospitalAccount.setHName(updateHospitalAccount.getName());
+//        hospitalAccount.setHStreet(updateHospitalAccount.getStreet());
+//        hospitalAccount.setHZipCode(updateHospitalAccount.getZipCode());
+//        hospitalAccount.setHCity(updateHospitalAccount.getCity());
+//        hospitalAccount.setHState(updateHospitalAccount.getState());
+//        hospitalAccount.setHContactNumber(updateHospitalAccount.getContactNumber());
+//        hospitalAccount.setHEmail(updateHospitalAccount.getEmail());
+//        hospitalAccount.setHWebsite(updateHospitalAccount.getWebsite());
+//        hospitalAccount.setHLabFacility(updateHospitalAccount.getLabFacility());
+//        hospitalAccount.setHInsuranceAcceptance(updateHospitalAccount.getInsuranceAcceptance());
+//        hospitalAccount.setHScanningFacility(updateHospitalAccount.getScanningFacility());
+
+    }
 
 }
