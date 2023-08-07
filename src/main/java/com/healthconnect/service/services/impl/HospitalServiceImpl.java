@@ -152,7 +152,6 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     public void  addDoctor(DoctorRequest doctorRequest){
-
         DoctorDetails doctorDetails = new DoctorDetails();
         doctorDetails.setHospitalId(doctorRequest.getHospitalId());
         doctorDetails.setFirstName(doctorRequest.getFirstName());
@@ -173,7 +172,7 @@ public class HospitalServiceImpl implements HospitalService {
 
 
     public void updateDoctor(DoctorRequest updateDoctor,Long id){
-        DoctorDetails doctorDetails = DoctorDetailsRepository;
+        DoctorDetails doctorDetails = doctorDetailsRepository.findByDoctorId(id);
         doctorDetails.setHospitalId(updateDoctor.getHospitalId());
         doctorDetails.setFirstName(updateDoctor.getFirstName());
         doctorDetails.setLastName(updateDoctor.getLastName());

@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -54,15 +55,13 @@ public class HospitalController {
         }
 
         @PostMapping("/doctor")
-        public HospitalResponse doctorAdd(@RequestBody DoctorRequest newDoctor){
-              HospitalService.addDoctor(newDoctor);
-              return null;
+        public void doctorAdd(@RequestBody DoctorRequest newDoctor){
+              hospitalService.addDoctor(newDoctor);
         }
 
         @PutMapping("/doctor/{id}")
-        public HospitalResponse doctorAdd(@RequestBody DoctorRequest updateDoctor, @PathVariable Long id){
-                HospitalService.updateDoctor(updateDoctor,id);
-                return null;
+        public void updateDoctor(@RequestBody DoctorRequest updateDoctor, @PathVariable Long id){
+                hospitalService.updateDoctor(updateDoctor,id);
         }
 
 
