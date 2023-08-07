@@ -12,7 +12,7 @@ public class DoctorRequest {
     private String gender;
     private Long age;
     private String specialization;
-    private Long contactNumber;
+    private String contactNumber;
     private String emailAddress;
     private Long yearsOfExperience;
     private String languagesKnown;

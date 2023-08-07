@@ -15,61 +15,45 @@ import javax.persistence.Table;
 public class HospitalAccount {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "h_id")
     private Long hospitalId;
 
     @Column(name = "h_password")
-    private String hPassword;
+    private String password;
 
     @Column(name = "h_name")
-    private String hName;
+    private String name;
 
     @Column(name = "h_street")
-    private String hStreet;
+    private String street;
 
     @Column(name = "h_zip_code")
-    private Long hZipCode;
+    private Long zipCode;
 
     @Column(name = "h_city")
-    private String hCity;
+    private String city;
 
     @Column(name = "h_state")
-    private String hState;
+    private String state;
 
     @Column(name = "h_contact_number")
-    private Long hContactNumber;
+    private String contactNumber;
 
     @Column(name = "h_email")
-    private String hEmail;
+    private String email;
 
     @Column(name = "h_website")
-    private String hWebsite;
+    private String website;
 
     @Column(name = "h_lab_facility")
-    private String hLabFacility;
+    private String labFacility;
 
     @Column(name = "h_insurance_acceptance")
-    private String hInsuranceAcceptance;
+    private String insuranceAcceptance;
 
     @Column(name = "h_scanning_facility")
-    private String hScanningFacility;
+    private String scanningFacility;
 
 
 }
-
-//    CREATE TABLE hospital_account (
-//        h_id INT NOT NULL AUTO_INCREMENT,
-//        h_password VARCHAR(100) DEFAULT NULL,
-//    h_name VARCHAR(200) DEFAULT NULL,
-//    h_street VARCHAR(200) DEFAULT NULL,
-//    h_zip_code INT DEFAULT NULL,
-//    h_city VARCHAR(100) DEFAULT NULL,
-//    h_state VARCHAR(100) DEFAULT NULL,
-//    h_contact_number INT DEFAULT NULL,
-//    h_email VARCHAR(100) DEFAULT NULL,
-//    h_website VARCHAR(200) DEFAULT NULL,
-//    h_lab_facility VARCHAR(100) DEFAULT NULL,
-//    n_insurance_acceptance VARCHAR(100) DEFAULT NULL,
-//    h_scanning_facility VARCHAR(100) DEFAULT NULL,
-//    PRIMARY KEY (`h_id`)
-//);

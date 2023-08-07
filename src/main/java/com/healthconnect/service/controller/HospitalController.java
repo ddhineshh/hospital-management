@@ -3,6 +3,7 @@ package com.healthconnect.service.controller;
 
 import com.healthconnect.service.request.HospitalAccountRequest;
 import com.healthconnect.service.request.LoginUserRequest;
+import com.healthconnect.service.request.UserRequest;
 import com.healthconnect.service.response.HospitalResponse;
 import com.healthconnect.service.response.UserResponse;
 import com.healthconnect.service.services.HospitalService;
@@ -36,7 +37,17 @@ public class HospitalController {
 
         @PostMapping("/create-hospital-account")
         public HospitalResponse createHospitalAccount(@RequestBody HospitalAccountRequest hospitalAccountRequest){
-                return null;
+                return hospitalService.createHospitalAccount(hospitalAccountRequest);
+        }
+
+        @PostMapping("/login-hospital")
+        public HospitalResponse hospitalLoginRequest(@RequestBody HospitalAccountRequest hospitalAccountRequest){
+                return hospitalService.getHospitalLoginData(hospitalAccountRequest);
+        }
+
+        @PostMapping("/create-user-account")
+        public UserResponse createUserAccount(@RequestBody UserRequest userRequest){
+                return hospitalService.createUserAccount(userRequest);
         }
 
 

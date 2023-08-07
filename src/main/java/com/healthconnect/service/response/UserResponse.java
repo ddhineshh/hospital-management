@@ -12,12 +12,12 @@ public class UserResponse {
     private String firstName;
     private String middleName;
     private String lastName;
-    private Long contactNumber;
+    private String contactNumber;
     private String streetName;
     private String city;
     private Long zipCode;
     private String state;
     private String emergencyContactName;
-    private Long emergencyContactNumber;
+    private String emergencyContactNumber;
     private LocalDateTime userCreatedData;
 }
