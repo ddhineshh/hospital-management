@@ -51,4 +51,12 @@ public interface HospitalService {
 
     public AllHospitalResponse constructAllHospitalResponse(Long hospitalId);
 
+    public HospitalResponse constructHospitalResponse(Long hospitalId);
+
+    public BedAvailableResponse constructBedAvailableResponse(Long hospitalId);
+
+    public BedResponse constructBedResponse(Long hospitalId);
+
+    public UserResponse updateUser(UserRequest userRequest);
+
 }
