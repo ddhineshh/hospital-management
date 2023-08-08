@@ -130,9 +130,9 @@ public class HospitalController {
                 return hospitalService.constructBedAvailableResponse(hospitalId);
         }
 
-        @PutMapping("/update-user")
-        public UserResponse updateUser(@RequestBody UserRequest userRequest){
-                return hospitalService.updateUser(userRequest);
+        @PutMapping("/update-user/{userId}")
+        public UserResponse updateUser(@RequestBody UserRequest userRequest, @PathVariable Long userId){
+                return hospitalService.updateUser(userRequest, userId);
         }
 
         @GetMapping("/get-user/{userId}")

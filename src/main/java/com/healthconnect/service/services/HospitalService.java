@@ -57,7 +57,7 @@ public interface HospitalService {
 
     public BedResponse constructBedResponse(Long hospitalId);
 
-    public UserResponse updateUser(UserRequest userRequest);
+    public UserResponse updateUser(UserRequest userRequest, Long userId);
 
     public UserResponse getUserById(Long userId);
 
