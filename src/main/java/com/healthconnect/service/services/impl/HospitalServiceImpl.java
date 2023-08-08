@@ -395,9 +395,9 @@ public class HospitalServiceImpl implements HospitalService {
     }
 
     @Override
-    public UserResponse updateUser(UserRequest userRequest) {
+    public UserResponse updateUser(UserRequest userRequest, Long userId) {
 
-        GeneralPublicUser generalPublicUser = userRepository.findByUserId(userRequest.getUserId());
+        GeneralPublicUser generalPublicUser = userRepository.findByUserId(userId);
 
         generalPublicUser.setFirstName(userRequest.getFirstName());
         generalPublicUser.setMiddleName(userRequest.getMiddleName());
