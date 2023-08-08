@@ -2,6 +2,7 @@ package com.healthconnect.service.controller;
 
 
 import com.healthconnect.service.entity.DoctorDetails;
+import com.healthconnect.service.entity.GeneralPublicUser;
 import com.healthconnect.service.entity.HospitalAccount;
 import com.healthconnect.service.entity.HospitalBeds;
 import com.healthconnect.service.entity.HospitalBedsAvailable;
@@ -134,11 +135,8 @@ public class HospitalController {
                 return hospitalService.updateUser(userRequest);
         }
 
-
-
-
-
-
-
-
+        @GetMapping("/get-user/{userId}")
+        public UserResponse getUserById(@PathVariable Long userId){
+                return hospitalService.getUserById(userId);
+        }
 }
