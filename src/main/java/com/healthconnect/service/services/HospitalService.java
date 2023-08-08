@@ -59,4 +59,6 @@ public interface HospitalService {
 
     public UserResponse updateUser(UserRequest userRequest);
 
+    public UserResponse getUserById(Long userId);
+
 }

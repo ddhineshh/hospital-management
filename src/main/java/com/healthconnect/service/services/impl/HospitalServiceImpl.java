@@ -57,7 +57,7 @@ public class HospitalServiceImpl implements HospitalService {
     @Override
     public UserResponse getUserLoginData(LoginUserRequest loginUserRequest) {
 
-        Optional<GeneralPublicUser> generalPublicUser = userRepository.findByEmailIdAndPassword(loginUserRequest.getEmailId(), loginUserRequest.getPassword());
+        Optional<GeneralPublicUser> generalPublicUser = userRepository.findByEmailIdAndPassword(loginUserRequest.getEmail(), loginUserRequest.getPassword());
 
         UserResponse userResponse = new UserResponse();
 
@@ -106,10 +106,26 @@ public class HospitalServiceImpl implements HospitalService {
 
         HospitalBeds hospitalBeds = new HospitalBeds();
         hospitalBeds.setHospitalId(hospitalEntity.getHospitalId());
+        hospitalBeds.setIcuBeds(0L);
+        hospitalBeds.setEmergencyBeds(0L);
+        hospitalBeds.setPediatricBeds(0L);
+        hospitalBeds.setRegularBeds(0L);
+        hospitalBeds.setMaternityBeds(0L);
+        hospitalBeds.setBirthingBeds(0L);
+        hospitalBeds.setOrthopedicBeds(0L);
+        hospitalBeds.setHomecareBeds(0L);
         bedsOfHospitalRepository.saveAndFlush(hospitalBeds);
 
         HospitalBedsAvailable hospitalBedsAvailable = new HospitalBedsAvailable();
         hospitalBedsAvailable.setHospitalId(hospitalEntity.getHospitalId());
+        hospitalBedsAvailable.setIcuBedsAvail(0L);
+        hospitalBedsAvailable.setEmergencyBedsAvail(0L);
+        hospitalBedsAvailable.setPediatricBedsAvail(0L);
+        hospitalBedsAvailable.setRegularBedsAvail(0L);
+        hospitalBedsAvailable.setMaternityBedsAvail(0L);
+        hospitalBedsAvailable.setBirthingBedsAvail(0L);
+        hospitalBedsAvailable.setOrthopedicBedsAvail(0L);
+        hospitalBedsAvailable.setHomecareBedsAvail(0L);
         hospitalBedsAvailabilityRepository.saveAndFlush(hospitalBedsAvailable);
 
         HospitalResponse hospitalResponse = constructHospitalResponse(hospitalEntity.getHospitalId());
@@ -241,6 +257,7 @@ public class HospitalServiceImpl implements HospitalService {
 
         HospitalResponse hospitalResponse = new HospitalResponse();
         hospitalResponse.setHospitalId(hospitalAccount.getHospitalId());
+        hospitalResponse.setPassword(hospitalResponse.getPassword());
         hospitalResponse.setName(hospitalAccount.getName());
         hospitalResponse.setStreet(hospitalAccount.getStreet());
         hospitalResponse.setZipCode(hospitalAccount.getZipCode());
@@ -260,6 +277,7 @@ public class HospitalServiceImpl implements HospitalService {
         GeneralPublicUser generalPublicUserEntity = userRepository.findByEmailId(emailId);
         UserResponse userResponse = new UserResponse();
         userResponse.setUserId(generalPublicUserEntity.getUserId());
+        userResponse.setPassword(generalPublicUserEntity.getPassword());
         userResponse.setEmailId(generalPublicUserEntity.getEmailId());
         userResponse.setFirstName(generalPublicUserEntity.getFirstName());
         userResponse.setMiddleName(generalPublicUserEntity.getMiddleName());
@@ -304,9 +322,8 @@ public class HospitalServiceImpl implements HospitalService {
 
     public BedAvailableResponse updateBedsAvailability(BedAvailabilityRequest bedAvailabilityRequest){
 
-        Optional<HospitalBedsAvailable> optionalHospitalBedsAvailable = hospitalBedsAvailabilityRepository.findById(bedAvailabilityRequest.getHospitalId());
+            HospitalBedsAvailable hospitalBedsAvailable = hospitalBedsAvailabilityRepository.findByHospitalId(bedAvailabilityRequest.getHospitalId());
 
-            HospitalBedsAvailable hospitalBedsAvailable = optionalHospitalBedsAvailable.get();
             hospitalBedsAvailable.setHospitalId(bedAvailabilityRequest.getHospitalId());
             hospitalBedsAvailable.setRegularBedsAvail(bedAvailabilityRequest.getRegularBedAvail());
             hospitalBedsAvailable.setIcuBedsAvail(bedAvailabilityRequest.getIcuBedAvail());
@@ -323,9 +340,7 @@ public class HospitalServiceImpl implements HospitalService {
         }
 
     public HospitalResponse updateHospitalAccount(HospitalAccountRequest updateHospitalAccount,Long hospitalId){
-        Optional<HospitalAccount> optionalHospitalBedsAvailable = hospitalRepository.findById(hospitalId);
-
-        HospitalAccount hospitalAccount = optionalHospitalBedsAvailable.get();
+        HospitalAccount hospitalAccount = hospitalRepository.findByHospitalId(hospitalId);
 
         hospitalAccount.setPassword(updateHospitalAccount.getPassword());
         hospitalAccount.setName(updateHospitalAccount.getName());
@@ -345,9 +360,8 @@ public class HospitalServiceImpl implements HospitalService {
         return constructHospitalResponse(hosEntity.getHospitalId());
     }
     public BedResponse updateBeds(HospitalBedRequest updateBeds){
-        Optional<HospitalBeds> optionalHospitalBeds= bedsOfHospitalRepository.findById(updateBeds.getHospitalId());
+        HospitalBeds hospitalBeds= bedsOfHospitalRepository.findByHospitalId(updateBeds.getHospitalId());
 
-        HospitalBeds hospitalBeds = optionalHospitalBeds.get();
         hospitalBeds.setHospitalId(updateBeds.getHospitalId());
         hospitalBeds.setRegularBeds(updateBeds.getRegularBeds());
         hospitalBeds.setIcuBeds(updateBeds.getIcuBeds());
@@ -432,5 +446,28 @@ public class HospitalServiceImpl implements HospitalService {
         allHospitalResponse.setDoctorResponseList(getListOfDoctor(hospitalId));
 
         return allHospitalResponse;
+    }
+
+
+    public UserResponse getUserById(Long userId){
+        GeneralPublicUser generalPublicUserEntity = userRepository.findByUserId(userId);
+        UserResponse userResponse = new UserResponse();
+        userResponse.setUserId(generalPublicUserEntity.getUserId());
+        userResponse.setPassword(generalPublicUserEntity.getPassword());
+        userResponse.setEmailId(generalPublicUserEntity.getEmailId());
+        userResponse.setFirstName(generalPublicUserEntity.getFirstName());
+        userResponse.setMiddleName(generalPublicUserEntity.getMiddleName());
+        userResponse.setLastName(generalPublicUserEntity.getLastName());
+        userResponse.setContactNumber(generalPublicUserEntity.getContactNumber());
+        userResponse.setStreetName(generalPublicUserEntity.getStreetName());
+        userResponse.setCity(generalPublicUserEntity.getCity());
+        userResponse.setZipCode(generalPublicUserEntity.getZipCode());
+        userResponse.setState(generalPublicUserEntity.getState());
+        userResponse.setEmergencyContactName(generalPublicUserEntity.getEmergencyContactName());
+        userResponse.setEmergencyContactNumber(generalPublicUserEntity.getEmergencyContactNumber());
+        userResponse.setUserCreatedData(generalPublicUserEntity.getUserCreatedData());
+
+        return userResponse;
+
     }
 }
